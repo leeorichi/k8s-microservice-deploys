@@ -1,0 +1,44 @@
+version: '3'
+services:
+
+    # PHP lamviectot API Service
+    studyk8sservice:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: studyk8sservice/laravel
+        container_name: studyk8sservice
+        restart: unless-stopped
+        tty: true
+        #entrypoint: [ "bash", "-c", "composer update && php artisan optimize:clear && php artisan kafka:consumer-run"]
+        environment:
+            TZ: Asia/Ho_Chi_Minh
+            SERVICE_NAME: studyk8sservice
+            SERVICE_TAGS: dev
+        volumes:
+            - ./:/var/www
+            - ./logs/supervisor/:/var/log/supervisor
+            - ./logs/schedule/:/var/www/logs/schedule
+            # - ./server/php/qc.ini:/usr/local/etc/php/conf.d/local.ini
+
+    # Nginx Service
+    studyk8sserver:
+        image: nginx:stable
+        container_name: studyk8sserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8001:8001"
+            - "8004:8004"
+        environment:
+            TZ: Asia/Ho_Chi_Minh
+        volumes:
+            - ./:/var/www
+            - ./logs/nginx/:/var/log/nginx/
+            - ./server/nginx/dev-api.conf:/etc/nginx/conf.d/api.conf
+
+# Docker Networks
+networks:
+    default:
+        external:
+            name: kun-k8s-network
