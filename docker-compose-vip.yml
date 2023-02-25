@@ -3,10 +3,7 @@ services:
 
     # PHP API Service
     studyk8sservice:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        image: studyk8sservice/laravel
+        image: leeori222/nginx-linear:latest
         container_name: studyk8sservice
         restart: unless-stopped
         tty: true

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: D:\bin\kompose.exe convert -f docker-compose-vip.yml
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: studyk8sserver
+  name: studyk8sserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: studyk8sserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: D:\bin\kompose.exe convert -f docker-compose-vip.yml
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/k8s-k8s-network: "true"
+        io.kompose.service: studyk8sserver
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Asia/Ho_Chi_Minh
+          image: nginx:stable
+          name: studyk8sserver
+          ports:
+            - containerPort: 8001
+            - containerPort: 8004
+          resources: {}
+          tty: true
+          volumeMounts:
+            - mountPath: /var/www
+              name: studyk8sserver-claim0
+            - mountPath: /var/log/nginx
+              name: studyk8sserver-claim1
+            - mountPath: /etc/nginx/conf.d/api.conf
+              name: studyk8sserver-claim2
+      restartPolicy: Always
+      volumes:
+        - name: studyk8sserver-claim0
+          persistentVolumeClaim:
+            claimName: studyk8sserver-claim0
+        - name: studyk8sserver-claim1
+          persistentVolumeClaim:
+            claimName: studyk8sserver-claim1
+        - name: studyk8sserver-claim2
+          persistentVolumeClaim:
+            claimName: studyk8sserver-claim2
+status: {}

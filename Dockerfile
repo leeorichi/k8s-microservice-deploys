@@ -13,9 +13,10 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     curl \
-    supervisor\
+    supervisor \
     libzip-dev \
 	libpng-dev \
+	telnet \
     logrotate
 
 # Install Redis cache
@@ -57,17 +58,17 @@ RUN usermod -u 1000 www-data
 # Change current user to root to using supervisor
 
 # Setup Cronjob
-COPY ./server/cron/kun /etc/cron.d/
-RUN chmod 644 /etc/cron.d/kun
-RUN crontab /etc/cron.d/kun
+COPY ./server/cron/k8s /etc/cron.d/
+RUN chmod 644 /etc/cron.d/k8s
+RUN crontab /etc/cron.d/k8s
 
 COPY ./server/cron/logrotate /etc/cron.daily/
 RUN chmod 644 /etc/cron.daily/logrotate
 
 # Setup logrotate
-COPY ./server/logrotate/kun /etc/logrotate.d/
-RUN chmod 644 /etc/logrotate.d/kun
-RUN dos2unix -b /etc/logrotate.d/kun
+COPY ./server/logrotate/k8s /etc/logrotate.d/
+RUN chmod 644 /etc/logrotate.d/k8s
+RUN dos2unix -b /etc/logrotate.d/k8s
 RUN ls -la /etc/logrotate.d/
 
 # Expose port 9000

@@ -1,0 +1,2 @@
+WEBDIR=/var/www
+* * * * * root cd $WEBDIR && /usr/local/bin/php artisan schedule:run >> $WEBDIR/logs/schedule/k8s-schedule.log 2>&1

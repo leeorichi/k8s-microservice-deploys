@@ -1,2 +1,0 @@
-WEBDIR=/var/www
-* * * * * root cd $WEBDIR && /usr/local/bin/php artisan schedule:run >> $WEBDIR/logs/schedule/kun-schedule.log 2>&1

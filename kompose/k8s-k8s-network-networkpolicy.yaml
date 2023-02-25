@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  creationTimestamp: null
+  name: k8s-k8s-network
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              io.kompose.network/k8s-k8s-network: "true"
+  podSelector:
+    matchLabels:
+      io.kompose.network/k8s-k8s-network: "true"
