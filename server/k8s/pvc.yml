@@ -14,16 +14,14 @@ spec:
       labels:
         app: deployment-pvc-kkk
     spec:
-      securityContext:
-        fsGroup: 2000
       containers:
       - name: study-service
         image: leeori222/nginx-linear
         volumeMounts:
           - mountPath: /var/www
             name: pvc-htdocs
-              #- mountPath: /var/log/nginx
-              #name: pvc-logs
+          - mountPath: /var/log/nginx
+            name: pvc-logs
       - name: study-server
         image: nginx:stable
         command: ["/bin/sh"]
@@ -34,8 +32,8 @@ spec:
         volumeMounts:
           - mountPath: /var/www
             name: pvc-htdocs
-              #- mountPath: /var/log/nginx
-              #name: pvc-logs
+          - mountPath: /var/log/nginx
+            name: pvc-logs
           - mountPath: /etc/nginx/conf.d
             name: pvc-nginx-config
       volumes:
@@ -46,12 +44,8 @@ spec:
       - name: pvc-logs
         nfs:
           server: 192.168.0.194
-          path: /var/www/data/lvt/htdocs/logs
+          path: /var/www/data/lvt/logs
       - name: pvc-nginx-config
         nfs:
           server: 192.168.0.194
-          path: /var/www/data/lvt/htdocs/server/nginx
-      - name: pvc-config
-        nfs:
-          server: 192.168.0.194
-          path: /var/www/data/lvt/htdocs/server
+          path: /var/www/data/lvt/nginx/nginx
