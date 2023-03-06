@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-pvc-kkk
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment-pvc-kkk
+  template:
+    metadata:
+      labels:
+        app: deployment-pvc-kkk
+    spec:
+      containers:
+      - name: study-service
+        image: leeori222/nginx-linear
+        volumeMounts:
+          - mountPath: /var/www
+            name: pvc-htdocs
+          - mountPath: /var/log/nginx
+            name: pvc-logs
+      - name: study-server
+        image: nginx:stable
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo hello; sleep 10;done"]
+        ports:
+          - containerPort: 8001
+          - containerPort: 8004
+        volumeMounts:
+          - mountPath: /var/www
+            name: pvc-htdocs
+          - mountPath: /var/log/nginx
+            name: pvc-logs
+          - mountPath: /etc/nginx/conf.d
+            name: pvc-nginx-config
+      volumes:
+      - name: pvc-htdocs
+        nfs:
+          server: 192.168.0.194
+          path: /var/www/data/lvt/htdocs
+      - name: pvc-logs
+        nfs:
+          server: 192.168.0.194
+          path: /var/www/data/lvt/logs
+      - name: pvc-nginx-config
+        nfs:
+          server: 192.168.0.194
+          path: /var/www/data/lvt/nginx/nginx
