@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: deployment-pvc-kkk
@@ -49,3 +49,18 @@ spec:
         nfs:
           server: 192.168.0.194
           path: /var/www/data/lvt/htdocs/server/nginx
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: lb-kkkqc
+  name: lb-kkkqc
+spec:
+  ports:
+    - port: 80
+      targetPort: 8001
+  selector:
+    app: deployment-pvc-kkk
+  type: LoadBalancer
