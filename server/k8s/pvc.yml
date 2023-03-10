@@ -44,8 +44,8 @@ spec:
       - name: pvc-logs
         nfs:
           server: 192.168.0.194
-          path: /var/www/data/lvt/logs
+          path: /var/www/data/lvt/htdocs/logs
       - name: pvc-nginx-config
         nfs:
           server: 192.168.0.194
-          path: /var/www/data/lvt/nginx/nginx
+          path: /var/www/data/lvt/htdocs/server/nginx
